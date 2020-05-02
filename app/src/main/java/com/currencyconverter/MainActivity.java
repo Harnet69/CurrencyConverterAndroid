@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private void convert(){
         amountInput = (EditText) findViewById(R.id.amountField);
         convertBtn = (Button) findViewById(R.id.convertBtn);
-
         convertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,16 +45,22 @@ public class MainActivity extends AppCompatActivity {
                 String spString = sp.getSelectedItem().toString();
                 if(!amount.equals("")) {
                     double amountForConvert = Double.parseDouble(String.valueOf(amountInput.getText()));
-                    String convertationResult = calculation(amountForConvert, getCurrency(spString));
-                    @SuppressLint("ShowToast") Toast toast = Toast.makeText(MainActivity.this, convertationResult, Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 400);
-                    LinearLayout toastLayout = (LinearLayout) toast.getView();
-                    TextView toastTV = (TextView) toastLayout.getChildAt(0);
-                    toastTV.setTextSize(30);
-                    toast.show();
+                    String convertationResult = calculation(amountForConvert, getCurrency(spString)) + " " + spString;
+                    showResultOnToast(convertationResult).show();
                 }
             }
         });
+    }
+
+    private Toast showResultOnToast(String result){
+        @SuppressLint("ShowToast") Toast toast = Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 400);
+        LinearLayout toastLayout = (LinearLayout) toast.getView();
+        TextView toastTV = (TextView) toastLayout.getChildAt(0);
+        toastTV.setTextSize(50);
+        TextView vv = (TextView) toast.getView().findViewById(android.R.id.message);
+        if( vv != null) vv.setGravity(Gravity.CENTER);
+        return toast;
     }
 
     private Currencies getCurrency(String currencyName){
